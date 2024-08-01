@@ -4,3 +4,6 @@
 [submodule "libs/chowdsp_utils"]
 	path = libs/chowdsp_utils
 	url = https://github.com/Chowdhury-DSP/chowdsp_utils.git
+[submodule "libs/chunkware-simple-dynamics"]
+	path = libs/chunkware-simple-dynamics
+	url = https://github.com/grawlinson/chunkware-simple-dynamics.git
