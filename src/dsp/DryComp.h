@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../External/SimpleComp/SimpleComp.h"
+#include "SimpleComp.h"
 
 class DryComp
 {
