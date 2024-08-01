@@ -1,5 +1,5 @@
-[submodule "modules/JUCE"]
-	path = modules/JUCE
+[submodule "libs/JUCE"]
+	path = libs/JUCE
 	url = https://github.com/juce-framework/JUCE.git
 [submodule "modules/chowdsp_utils"]
 	path = modules/chowdsp_utils
