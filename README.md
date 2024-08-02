@@ -1,9 +1,31 @@
 # JS-808-Ultra
 
-Model of the classic Ibanez Tube Screamer 808 using Nodal Analysis and Wave
-Digital Filters (WDF) with a few new features added!
+Model of the classic [Ibanez Tube Screamer][4] 808 using Nodal Analysis and
+Wave Digital Filters (WDF) with a few new features added!
+
+Plugins currently available are:
+
+* Standalone
+* VST3
+* AU
+* AUv3
+* LV2
+* CLAP
 
 ![Screenshot of the JS-808-Ultra plugin](docs/plugin-ui.png)
+
+## Building
+
+```sh
+# clone repository
+git clone https://github.com/grawlinson/JS-808-Ultra.git && cd JS-808-Ultra
+# setup all submodules
+git submodule update --init --recursive
+# setup cmake & start building!
+cmake -B build -S . && cmake --build build
+# plugins should be found in the following directory
+cd build/JS-808-Ultra_artefacts/Release
+```
 
 ## Basis of circuits simulated
 
@@ -67,3 +89,4 @@ potentiometer emulation below is used in the plugin.
 [1]: https://github.com/jatinchowdhury18/WaveDigitalFilters
 [2]: https://www.researchgate.net/publication/299514713_An_Improved_and_Generalized_Diode_Clipper_Model_for_Wave_Digital_Filters
 [3]: https://dafx.de/paper-archive/2007/Papers/p189.pdf
+[4]: https://en.wikipedia.org/wiki/Ibanez_Tube_Screamer
