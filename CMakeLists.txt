@@ -14,6 +14,7 @@ endif()
 project(JS-808-Ultra VERSION 1.0.1 LANGUAGES CXX)
 
 add_subdirectory(libs/JUCE)
+add_subdirectory(libs/clap-juce-extensions)
 add_subdirectory(libs/chowdsp_utils)
 add_subdirectory(libs/chunkware-simple-dynamics)
 
@@ -33,6 +34,11 @@ juce_add_plugin(${PROJECT_NAME}
   COPY_PLUGIN_AFTER_BUILD FALSE
   VST3_CATEGORIES Fx
   AU_MAIN_TYPE kAudioUnitType_Effect
+)
+
+clap_juce_extensions_plugin(TARGET ${PROJECT_NAME}
+  CLAP_ID "com.JamesStubbsEng.TS-808-Ultra"
+  CLAP_FEATURES "audio-effect"
 )
 
 juce_generate_juce_header(${PROJECT_NAME})

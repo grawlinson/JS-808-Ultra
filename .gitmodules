@@ -7,3 +7,6 @@
 [submodule "libs/chunkware-simple-dynamics"]
 	path = libs/chunkware-simple-dynamics
 	url = https://github.com/grawlinson/chunkware-simple-dynamics.git
+[submodule "libs/clap-juce-extensions"]
+	path = libs/clap-juce-extensions
+	url = https://github.com/free-audio/clap-juce-extensions.git
