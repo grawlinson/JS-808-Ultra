@@ -18,7 +18,21 @@ add_subdirectory(libs/chowdsp_utils)
 add_subdirectory(libs/chunkware-simple-dynamics)
 
 juce_add_plugin(${PROJECT_NAME}
-  FORMATS Standalone VST3
+  COMPANY_NAME "JamesStubbsEng"
+  COMPANY_WEBSITE "https://github.com/JamesStubbsEng/TS-808-Ultra"
+  BUNDLE_ID "com.JamesStubbsEng.TS-808-Ultra"
+  DESCRIPTION "Digital model of the Ibanez Tube Screamer 808"
+  PLUGIN_MANUFACTURER_CODE JSTE
+  PLUGIN_CODE T808
+  FORMATS Standalone VST3 AU AUv3 LV2
+  IS_SYNTH FALSE
+  NEEDS_MIDI_INPUT FALSE
+  NEEDS_MIDI_OUTPUT FALSE
+  IS_MIDI_EFFECT FALSE
+  EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+  COPY_PLUGIN_AFTER_BUILD FALSE
+  VST3_CATEGORIES Fx
+  AU_MAIN_TYPE kAudioUnitType_Effect
 )
 
 juce_generate_juce_header(${PROJECT_NAME})
