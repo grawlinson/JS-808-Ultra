@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
+# set better CMake defaults
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 17)
 if(NOT CMAKE_BUILD_TYPE)
@@ -11,20 +12,27 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU" AND UNIX AND NOT APPLE AND NOT SKIP_PIE_C
   set(CMAKE_EXE_LINKER_FLAGS "-no-pie")
 endif()
 
-project(JS-808-Ultra VERSION 1.0.1 LANGUAGES CXX)
 
+# JUCE & dependencies
 add_subdirectory(libs/JUCE)
 add_subdirectory(libs/clap-juce-extensions)
 add_subdirectory(libs/chowdsp_utils)
 add_subdirectory(libs/chunkware-simple-dynamics)
 
+# metadata
+set(COMPANY_NAME "grawlinson")
+set(PROJECT_NAME "JS-808-Ultra")
+set(PLUGIN_ID "com.${COMPANY_NAME}.${PROJECT_NAME}")
+project(${PROJECT_NAME} VERSION 1.0.1 LANGUAGES CXX)
+
+# setup JUCE
 juce_add_plugin(${PROJECT_NAME}
-  COMPANY_NAME "JamesStubbsEng"
+  COMPANY_NAME ${COMPANY_NAME}
   COMPANY_WEBSITE "https://github.com/JamesStubbsEng/TS-808-Ultra"
-  BUNDLE_ID "com.JamesStubbsEng.TS-808-Ultra"
+  BUNDLE_ID ${PLUGIN_ID}
   DESCRIPTION "Digital model of the Ibanez Tube Screamer 808"
-  PLUGIN_MANUFACTURER_CODE JSTE
-  PLUGIN_CODE T808
+  PLUGIN_MANUFACTURER_CODE GRAW
+  PLUGIN_CODE J808
   FORMATS Standalone VST3 AU AUv3 LV2
   IS_SYNTH FALSE
   NEEDS_MIDI_INPUT FALSE
@@ -36,8 +44,9 @@ juce_add_plugin(${PROJECT_NAME}
   AU_MAIN_TYPE kAudioUnitType_Effect
 )
 
+# setup CLAP plugin
 clap_juce_extensions_plugin(TARGET ${PROJECT_NAME}
-  CLAP_ID "com.JamesStubbsEng.TS-808-Ultra"
+  CLAP_ID ${PLUGIN_ID}
   CLAP_FEATURES "audio-effect"
 )
 
@@ -77,13 +86,17 @@ target_link_libraries(${PROJECT_NAME}
     juce_gui_extra
     juce_dsp
     chowdsp_dsp
+  PUBLIC
+    juce::juce_recommended_warning_flags
+    juce::juce_recommended_config_flags
+    juce::juce_recommended_lto_flags
 )
 
 target_compile_definitions(${PROJECT_NAME}
   PUBLIC
-  JUCE_WEB_BROWSER=0
-  JUCE_USE_CURL=0
-  JUCE_VST3_CAN_REPLACE_VST2=0
-  JUCE_DISPLAY_SPLASH_SCREEN=0
-  JUCE_REPORT_APP_USAGE=0
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_VST3_CAN_REPLACE_VST2=0
+    JUCE_DISPLAY_SPLASH_SCREEN=0
+    JUCE_REPORT_APP_USAGE=0
 )
