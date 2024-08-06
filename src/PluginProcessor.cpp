@@ -129,7 +129,7 @@ void TS808UltraAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 
     for (int ch = 0; ch < 2; ++ch)
     {
-        clippingStage[ch].prepare ((float) sampleRate * std::powf (2.0f, float (oversampleFactor)));
+        clippingStage[ch].prepare ((float) sampleRate * std::pow (2.0f, float (oversampleFactor)));
         clippingStage[ch].setDrive (*driveParameter);
         toneStage[ch].prepare ((float) sampleRate);
         toneStage[ch].setTone (*toneParameter);
