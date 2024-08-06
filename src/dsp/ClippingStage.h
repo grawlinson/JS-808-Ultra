@@ -10,9 +10,9 @@
 
 #pragma once
 
+#include <chowdsp_dsp/chowdsp_dsp.h>
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <juce_dsp/juce_dsp.h>
-#include <chowdsp_dsp/chowdsp_dsp.h>
 
 #include "ClipWDFa.h"
 #include "ClipWDFb.h"
@@ -22,13 +22,13 @@ class ClippingStage
 {
 public:
     ClippingStage();
-    void setDrive(float drive);
+    void setDrive (float drive);
     void reset();
-    void prepare(float sampleRate);
-    float processSample(float) noexcept;
+    void prepare (float sampleRate);
+    float processSample (float) noexcept;
 
 private:
-    float audioTaperPotSim(float in);
+    float audioTaperPotSim (float in);
     float fs = 44100.0f;
 
     ClipWDFa clipWDFa;
@@ -39,7 +39,7 @@ private:
 
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> p1Smoothed;
 
-    juce::dsp::Oversampling<float> oversampling{ 2, 1, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR };
+    juce::dsp::Oversampling<float> oversampling { 2, 1, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ClippingStage)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClippingStage)
 };

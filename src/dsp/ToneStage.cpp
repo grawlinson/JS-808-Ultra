@@ -14,38 +14,38 @@ ToneStage::ToneStage()
 {
 }
 
-void ToneStage::setTone(float tone)
+void ToneStage::setTone (float tone)
 {
-    auto gTaperPotOutput = taperPotSim(tone);
-    rLSmoothed.setTargetValue(juce::jmap(gTaperPotOutput, 0.0f, 10.0f, 10.0f, rPot));
+    auto gTaperPotOutput = taperPotSim (tone);
+    rLSmoothed.setTargetValue (juce::jmap (gTaperPotOutput, 0.0f, 10.0f, 10.0f, rPot));
 }
 
-void ToneStage::prepare(float sampleRate)
+void ToneStage::prepare (float sampleRate)
 {
     chowdsp::IIRFilter<2>::reset();
-    fs = (float)sampleRate;
+    fs = (float) sampleRate;
 
-    rLSmoothed.setCurrentAndTargetValue(10.0f);
-    rLSmoothed.reset(sampleRate, 0.05);
+    rLSmoothed.setCurrentAndTargetValue (10.0f);
+    rLSmoothed.reset (sampleRate, 0.05);
 
-    calcCoefs(rLSmoothed.getTargetValue());
+    calcCoefs (rLSmoothed.getTargetValue());
 }
 
-void ToneStage::calcCoefs(float rL)
+void ToneStage::calcCoefs (float rL)
 {
-    // based on analog transfer funtion in 
+    // based on analog transfer funtion in
     // https://ccrma.stanford.edu/~dtyeh/papers/yeh07_dafx_distortion.pdf
     // on page 6
 
-    constexpr float Cs = (float)0.22e-6;
-    constexpr float Rs = (float)1e3;
-    constexpr float Ri = (float)10e3;
-    constexpr float Cz = (float)0.22e-6;
+    constexpr float Cs = (float) 0.22e-6;
+    constexpr float Rs = (float) 1e3;
+    constexpr float Ri = (float) 10e3;
+    constexpr float Cz = (float) 0.22e-6;
     constexpr float Rz = 220.0f;
-    constexpr float Rf = (float)1e3;
+    constexpr float Rf = (float) 1e3;
 
     constexpr float wp = 1.0f / (Cs * Rs * Ri / (Rs + Ri));
-   
+
     const float Rl = rL;
     const float Rr = rPot - rL;
 
@@ -69,32 +69,31 @@ void ToneStage::calcCoefs(float rL)
 
     // frequency warping (Use chowdsp for now to find wc. Later run matlab sim)
 
-    const float wc = chowdsp::Bilinear::calcPoleFreq(as[0], as[1], as[2]);
-    const auto K = wc == 0.0f ? 2.0f * fs : wc / std::tan(wc / (2.0f * fs));
+    const float wc = chowdsp::Bilinear::calcPoleFreq (as[0], as[1], as[2]);
+    const auto K = wc == 0.0f ? 2.0f * fs : wc / std::tan (wc / (2.0f * fs));
 
-    chowdsp::Bilinear::BilinearTransform<float, 3>::call(b, a, bs, as, K);
-
+    chowdsp::Bilinear::BilinearTransform<float, 3>::call (b, a, bs, as, K);
 }
 
-void ToneStage::processBlock(float* block, const int numSamples) noexcept
+void ToneStage::processBlock (float* block, const int numSamples) noexcept
 {
     if (rLSmoothed.isSmoothing())
     {
         for (int n = 0; n < numSamples; ++n)
         {
-            calcCoefs(rLSmoothed.getNextValue());
-            block[n] = processSample(block[n]);
+            calcCoefs (rLSmoothed.getNextValue());
+            block[n] = processSample (block[n]);
         }
     }
     else
     {
-        chowdsp::IIRFilter<2>::processBlock(block, numSamples);
+        chowdsp::IIRFilter<2>::processBlock (block, numSamples);
     }
 }
 
-float ToneStage::taperPotSim(float in)
+float ToneStage::taperPotSim (float in)
 {
-    jassert(in >= 0.0f && in <= 10.0f);
+    jassert (in >= 0.0f && in <= 10.0f);
 
     // g taper
     //if (in >= 0 && in <= 1.0f)
@@ -116,5 +115,5 @@ float ToneStage::taperPotSim(float in)
     if (in >= 0 && in <= 5.0f)
         return (9.0f / 5.0f) * in;
     else
-        return  (1.0f / 5.0f) * in + 8.0f;
+        return (1.0f / 5.0f) * in + 8.0f;
 }

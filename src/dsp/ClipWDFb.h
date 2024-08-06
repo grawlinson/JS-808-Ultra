@@ -20,9 +20,9 @@ class ClipWDFb
 public:
     ClipWDFb() = default;
 
-    void prepare(double sampleRate)
+    void prepare (double sampleRate)
     {
-        C3.prepare((float)sampleRate);
+        C3.prepare ((float) sampleRate);
     }
 
     void reset()
@@ -31,23 +31,23 @@ public:
     }
 
     // Takes voltage and returns current
-    inline float processSample(float x)
+    inline float processSample (float x)
     {
-        Vs.setVoltage(x);
+        Vs.setVoltage (x);
 
-        Vs.incident(S1.reflected());
-        auto y = current<float>(R4);
-        S1.incident(Vs.reflected());
+        Vs.incident (S1.reflected());
+        auto y = current<float> (R4);
+        S1.incident (Vs.reflected());
 
         return y;
     }
 
 private:
-    ResistorT<float> R4{ 4700.0f };
+    ResistorT<float> R4 { 4700.0f };
 
-    CapacitorT<float> C3{ 47.0e-9f, 48000.0f };
+    CapacitorT<float> C3 { 47.0e-9f, 48000.0f };
 
-    WDFSeriesT<float, decltype (C3), decltype (R4)> S1{ C3, R4 };
+    WDFSeriesT<float, decltype (C3), decltype (R4)> S1 { C3, R4 };
 
-    IdealVoltageSourceT<float, decltype (S1)> Vs{ S1 };
+    IdealVoltageSourceT<float, decltype (S1)> Vs { S1 };
 };

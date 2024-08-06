@@ -16,7 +16,7 @@
 //==============================================================================
 /**
 */
-class TS808UltraAudioProcessorEditor  : public juce::AudioProcessorEditor
+class TS808UltraAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
     TS808UltraAudioProcessorEditor (TS808UltraAudioProcessor&, juce::AudioProcessorValueTreeState& vts);
@@ -25,8 +25,6 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-
-    
 
 private:
     TS808UltraAudioProcessor& audioProcessor;

@@ -20,9 +20,9 @@ class ClipWDFc
 public:
     ClipWDFc() = default;
 
-    void prepare(double sampleRate)
+    void prepare (double sampleRate)
     {
-        C4.prepare((float)sampleRate);
+        C4.prepare ((float) sampleRate);
     }
 
     void reset()
@@ -30,20 +30,20 @@ public:
         C4.reset();
     }
 
-    void setPotResitanceValue(float newPotR)
+    void setPotResitanceValue (float newPotR)
     {
-        constexpr float R6 = (float)51e3;
-        Is.setResistanceValue(R6 + newPotR);
+        constexpr float R6 = (float) 51e3;
+        Is.setResistanceValue (R6 + newPotR);
     }
 
     // Takes current and returns voltage
-    inline float processSample(float x)
+    inline float processSample (float x)
     {
-        Is.setCurrent(x);
+        Is.setCurrent (x);
 
-        dp.incident(P1.reflected());
-        auto y = voltage<float>(C4);
-        P1.incident(dp.reflected());
+        dp.incident (P1.reflected());
+        auto y = voltage<float> (C4);
+        P1.incident (dp.reflected());
 
         return y;
     }
@@ -51,11 +51,10 @@ public:
 private:
     ResistiveCurrentSourceT<float> Is;
 
-    CapacitorT<float> C4{ 51.0e-12f };  
+    CapacitorT<float> C4 { 51.0e-12f };
 
-    WDFParallelT<float, decltype (Is), decltype (C4)> P1{ Is, C4 };
+    WDFParallelT<float, decltype (Is), decltype (C4)> P1 { Is, C4 };
 
     // 1N914 diode pair at 25C and VR = 20V
-    DiodePairT<float, decltype (P1)> dp{ P1, 25e-9f };
-   
+    DiodePairT<float, decltype (P1)> dp { P1, 25e-9f };
 };

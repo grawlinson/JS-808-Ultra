@@ -12,14 +12,14 @@
 #include <juce_data_structures/juce_data_structures.h>
 
 #include "dsp/ClippingStage.h"
-#include "dsp/ToneStage.h"
-#include "dsp/DryLPF.h"
 #include "dsp/DryComp.h"
+#include "dsp/DryLPF.h"
+#include "dsp/ToneStage.h"
 
 //==============================================================================
 /**
 */
-class TS808UltraAudioProcessor  : public juce::AudioProcessor
+class TS808UltraAudioProcessor : public juce::AudioProcessor
 {
 public:
     //==============================================================================
@@ -30,9 +30,9 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
+#ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#endif
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
@@ -85,6 +85,6 @@ private:
     juce::dsp::Gain<float> outputGain;
 
     juce::AudioBuffer<float> parallelBuffer;
-    
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TS808UltraAudioProcessor)
 };

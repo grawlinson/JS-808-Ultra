@@ -17,11 +17,11 @@ class DryLPF
 {
 public:
     DryLPF();
-    void setCutoff(float val);
-    void prepare(const juce::dsp::ProcessSpec& spec) noexcept;
+    void setCutoff (float val);
+    void prepare (const juce::dsp::ProcessSpec& spec) noexcept;
     void reset();
     template <typename ProcessContext>
-    void processBlock(const ProcessContext& context) noexcept;
+    void processBlock (const ProcessContext& context) noexcept;
 
 private:
     float sampleRate = 44100.0f;
@@ -29,11 +29,11 @@ private:
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> cutoffSmoothed;
     juce::dsp::StateVariableTPTFilter<float> lpFilter;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DryLPF)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DryLPF)
 };
 
-template<typename ProcessContext>
-inline void DryLPF::processBlock(const ProcessContext& context) noexcept
+template <typename ProcessContext>
+inline void DryLPF::processBlock (const ProcessContext& context) noexcept
 {
     const auto& inputBlock = context.getInputBlock();
     auto& outputBlock = context.getOutputBlock();
@@ -42,18 +42,18 @@ inline void DryLPF::processBlock(const ProcessContext& context) noexcept
 
     if (context.isBypassed)
     {
-        outputBlock.copyFrom(inputBlock);
+        outputBlock.copyFrom (inputBlock);
         return;
     }
 
     for (size_t i = 0; i < numSamples; ++i)
     {
-        lpFilter.setCutoffFrequency(cutoffSmoothed.getNextValue());
+        lpFilter.setCutoffFrequency (cutoffSmoothed.getNextValue());
         for (size_t channel = 0; channel < numChannels; ++channel)
         {
-            auto* inputSamples = inputBlock.getChannelPointer(channel);
-            auto* outputSamples = outputBlock.getChannelPointer(channel);
-            outputSamples[i] = lpFilter.processSample((int)channel, inputSamples[i]);
+            auto* inputSamples = inputBlock.getChannelPointer (channel);
+            auto* outputSamples = outputBlock.getChannelPointer (channel);
+            outputSamples[i] = lpFilter.processSample ((int) channel, inputSamples[i]);
         }
-    }  
+    }
 }

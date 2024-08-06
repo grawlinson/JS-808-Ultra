@@ -12,33 +12,33 @@
 //==============================================================================
 TS808UltraAudioProcessor::TS808UltraAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       ), parameters(*this, nullptr, juce::Identifier("sampld"),
-                           {
-                               std::make_unique<juce::AudioParameterFloat>("inputGain", "Input Gain", juce::NormalisableRange<float>(-80.0f, 20.0f,0.1f, 2.0f), 0.0f),
-                               std::make_unique<juce::AudioParameterFloat>("drive", "Drive", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 2.0f),
-                               std::make_unique<juce::AudioParameterFloat>("tone", "Tone", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 5.0f),
-                               std::make_unique<juce::AudioParameterFloat>("mix", "Mix", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 10.0f),
-                               std::make_unique<juce::AudioParameterFloat>("filter", "Direct Filter", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 0.0f),
-                               std::make_unique<juce::AudioParameterFloat>("drySquash", "Direct Squash", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 0.0f),
-                               std::make_unique<juce::AudioParameterFloat>("outputGain", "Output Gain", juce::NormalisableRange<float>(-30.0f, 30.0f,0.1f), 0.0f),
-                              
-                           })
+    : AudioProcessor (BusesProperties()
+    #if !JucePlugin_IsMidiEffect
+        #if !JucePlugin_IsSynth
+                          .withInput ("Input", juce::AudioChannelSet::stereo(), true)
+        #endif
+                          .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+    #endif
+              ),
+      parameters (*this, nullptr, juce::Identifier ("sampld"), {
+                                                                   std::make_unique<juce::AudioParameterFloat> ("inputGain", "Input Gain", juce::NormalisableRange<float> (-80.0f, 20.0f, 0.1f, 2.0f), 0.0f),
+                                                                   std::make_unique<juce::AudioParameterFloat> ("drive", "Drive", juce::NormalisableRange<float> (0.0f, 10.0f, 0.1f), 2.0f),
+                                                                   std::make_unique<juce::AudioParameterFloat> ("tone", "Tone", juce::NormalisableRange<float> (0.0f, 10.0f, 0.1f), 5.0f),
+                                                                   std::make_unique<juce::AudioParameterFloat> ("mix", "Mix", juce::NormalisableRange<float> (0.0f, 10.0f, 0.1f), 10.0f),
+                                                                   std::make_unique<juce::AudioParameterFloat> ("filter", "Direct Filter", juce::NormalisableRange<float> (0.0f, 10.0f, 0.1f), 0.0f),
+                                                                   std::make_unique<juce::AudioParameterFloat> ("drySquash", "Direct Squash", juce::NormalisableRange<float> (0.0f, 10.0f, 0.1f), 0.0f),
+                                                                   std::make_unique<juce::AudioParameterFloat> ("outputGain", "Output Gain", juce::NormalisableRange<float> (-30.0f, 30.0f, 0.1f), 0.0f),
+
+                                                               })
 #endif
 {
-    inputGainParameter = parameters.getRawParameterValue("inputGain");
-    driveParameter = parameters.getRawParameterValue("drive");
-    toneParameter = parameters.getRawParameterValue("tone");
-    mixParameter = parameters.getRawParameterValue("mix");
-    filterParameter = parameters.getRawParameterValue("filter");
-    drySquashParameter = parameters.getRawParameterValue("drySquash");
-    outputGainParameter = parameters.getRawParameterValue("outputGain");
+    inputGainParameter = parameters.getRawParameterValue ("inputGain");
+    driveParameter = parameters.getRawParameterValue ("drive");
+    toneParameter = parameters.getRawParameterValue ("tone");
+    mixParameter = parameters.getRawParameterValue ("mix");
+    filterParameter = parameters.getRawParameterValue ("filter");
+    drySquashParameter = parameters.getRawParameterValue ("drySquash");
+    outputGainParameter = parameters.getRawParameterValue ("outputGain");
 }
 
 TS808UltraAudioProcessor::~TS808UltraAudioProcessor()
@@ -53,29 +53,29 @@ const juce::String TS808UltraAudioProcessor::getName() const
 
 bool TS808UltraAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool TS808UltraAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool TS808UltraAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double TS808UltraAudioProcessor::getTailLengthSeconds() const
@@ -85,8 +85,8 @@ double TS808UltraAudioProcessor::getTailLengthSeconds() const
 
 int TS808UltraAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    return 1; // NB: some hosts don't cope very well if you tell them there are 0 programs,
+        // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int TS808UltraAudioProcessor::getCurrentProgram()
@@ -115,25 +115,25 @@ void TS808UltraAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = getTotalNumOutputChannels();
 
-    dryWetMixer.prepare(spec);
-    dryWetMixer.setMixingRule(juce::dsp::DryWetMixingRule::sin3dB);
+    dryWetMixer.prepare (spec);
+    dryWetMixer.setMixingRule (juce::dsp::DryWetMixingRule::sin3dB);
 
-    dryComp.prepare(sampleRate);
-    dryLPF.prepare(spec);
+    dryComp.prepare (sampleRate);
+    dryLPF.prepare (spec);
 
-    inputGain.prepare(spec);
-    outputGain.prepare(spec);
+    inputGain.prepare (spec);
+    outputGain.prepare (spec);
 
     oversampling.initProcessing (samplesPerBlock);
-    parallelBuffer.setSize(spec.numChannels, spec.maximumBlockSize);
+    parallelBuffer.setSize (spec.numChannels, spec.maximumBlockSize);
 
     for (int ch = 0; ch < 2; ++ch)
     {
-        clippingStage[ch].prepare((float)sampleRate * std::powf(2.0f, float(oversampleFactor)));
-        clippingStage[ch].setDrive(*driveParameter);
-        toneStage[ch].prepare((float)sampleRate);
-        toneStage[ch].setTone(*toneParameter);
-    }    
+        clippingStage[ch].prepare ((float) sampleRate * std::powf (2.0f, float (oversampleFactor)));
+        clippingStage[ch].setDrive (*driveParameter);
+        toneStage[ch].prepare ((float) sampleRate);
+        toneStage[ch].setTone (*toneParameter);
+    }
 }
 
 void TS808UltraAudioProcessor::releaseResources()
@@ -149,32 +149,31 @@ void TS808UltraAudioProcessor::releaseResources()
         clippingStage[ch].reset();
         toneStage[ch].reset();
     }
-        
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool TS808UltraAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+    #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
     return true;
-  #else
+    #else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     // Some plugin hosts, such as certain GarageBand versions, will only
     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+            // This checks if the input layout matches the output layout
+        #if !JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
+        #endif
 
     return true;
-  #endif
+    #endif
 }
 #endif
 
@@ -183,62 +182,61 @@ void TS808UltraAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     juce::ScopedNoDenormals noDenormals;
     const auto numSamples = buffer.getNumSamples();
 
-    juce::dsp::AudioBlock<float> block(buffer);
-    auto context = juce::dsp::ProcessContextReplacing<float>(block);  
+    juce::dsp::AudioBlock<float> block (buffer);
+    auto context = juce::dsp::ProcessContextReplacing<float> (block);
 
     // input gain stage
-    inputGain.setGainDecibels(*inputGainParameter);
-    inputGain.process(context);
+    inputGain.setGainDecibels (*inputGainParameter);
+    inputGain.process (context);
 
     // copy original dry signal into a buffer
-    parallelBuffer.makeCopyOf(buffer, true);
-    juce::dsp::AudioBlock<float> parallelBlock(parallelBuffer);
-    auto parallelContext = juce::dsp::ProcessContextReplacing<float>(parallelBlock);
+    parallelBuffer.makeCopyOf (buffer, true);
+    juce::dsp::AudioBlock<float> parallelBlock (parallelBuffer);
+    auto parallelContext = juce::dsp::ProcessContextReplacing<float> (parallelBlock);
 
     //------start of di parallel processing---------
-    dryComp.setThreshold(*drySquashParameter);
-    dryComp.processBlock(parallelBuffer);
+    dryComp.setThreshold (*drySquashParameter);
+    dryComp.processBlock (parallelBuffer);
 
-    dryLPF.setCutoff(*filterParameter);
-    dryLPF.processBlock(parallelContext);
+    dryLPF.setCutoff (*filterParameter);
+    dryLPF.processBlock (parallelContext);
 
-    dryWetMixer.setWetMixProportion(juce::jmap((float)*mixParameter, 0.0f, 10.0f, 0.0f, 1.0f));
-    dryWetMixer.pushDrySamples(parallelBlock);
+    dryWetMixer.setWetMixProportion (juce::jmap ((float) *mixParameter, 0.0f, 10.0f, 0.0f, 1.0f));
+    dryWetMixer.pushDrySamples (parallelBlock);
     //------end of di parallel processing-----------
 
-    
     //--------start of TS808 processing------------
-   
+
     auto osBlock = oversampling.processSamplesUp (block);
 
     for (int ch = 0; ch < osBlock.getNumChannels(); ++ch)
     {
         clippingStage[ch].setDrive (*driveParameter);
-        auto* x = osBlock.getChannelPointer(ch);
+        auto* x = osBlock.getChannelPointer (ch);
 
         for (int n = 0; n < osBlock.getNumSamples(); ++n)
             x[n] = clippingStage[ch].processSample (x[n]);
     }
-    
+
     oversampling.processSamplesDown (block);
 
     // tone stage
     for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     {
-        auto* x = buffer.getWritePointer(ch);
+        auto* x = buffer.getWritePointer (ch);
 
-        toneStage[ch].setTone(*toneParameter);
-        toneStage[ch].processBlock(x, numSamples);
+        toneStage[ch].setTone (*toneParameter);
+        toneStage[ch].processBlock (x, numSamples);
     }
 
     //--------end of TS808 processing-----------
 
     // mix signals
-    dryWetMixer.mixWetSamples(block);
-    
+    dryWetMixer.mixWetSamples (block);
+
     // Output Gain stage
-    outputGain.setGainDecibels(*outputGainParameter);
-    outputGain.process(context);
+    outputGain.setGainDecibels (*outputGainParameter);
+    outputGain.process (context);
 }
 
 //==============================================================================
@@ -256,17 +254,17 @@ juce::AudioProcessorEditor* TS808UltraAudioProcessor::createEditor()
 void TS808UltraAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto state = parameters.copyState();
-    std::unique_ptr<juce::XmlElement> xml(state.createXml());
-    copyXmlToBinary(*xml, destData);
+    std::unique_ptr<juce::XmlElement> xml (state.createXml());
+    copyXmlToBinary (*xml, destData);
 }
 
 void TS808UltraAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
 
     if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(parameters.state.getType()))
-            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+        if (xmlState->hasTagName (parameters.state.getType()))
+            parameters.replaceState (juce::ValueTree::fromXml (*xmlState));
 }
 
 //==============================================================================
