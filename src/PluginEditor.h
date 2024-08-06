@@ -33,8 +33,6 @@ private:
 
     juce::AudioProcessorValueTreeState& valueTreeState;
 
-    //typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
-
     juce::Slider inputGainSlider;
     juce::Slider driveSlider;
     juce::Slider toneSlider;
