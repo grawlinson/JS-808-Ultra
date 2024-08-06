@@ -10,7 +10,8 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+#include <juce_audio_basics/juce_audio_basics.h>
+#include <juce_dsp/juce_dsp.h>
 
 class DryLPF
 {
@@ -26,7 +27,7 @@ private:
     float sampleRate = 44100.0f;
 
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> cutoffSmoothed;
-    dsp::StateVariableTPTFilter<float> lpFilter;
+    juce::dsp::StateVariableTPTFilter<float> lpFilter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DryLPF)
 };

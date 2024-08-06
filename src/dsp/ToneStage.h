@@ -9,7 +9,9 @@
 */
 
 #pragma once
-#include <JuceHeader.h>
+
+#include <juce_audio_basics/juce_audio_basics.h>
+#include <chowdsp_dsp/chowdsp_dsp.h>
 
 class ToneStage : public chowdsp::IIRFilter<2>
 {

@@ -17,7 +17,7 @@ ClippingStage::ClippingStage()
 void ClippingStage::setDrive(float drive)
 {
     auto audioTaperPotOutput = audioTaperPotSim(drive);
-    p1Smoothed.setTargetValue(jmap(audioTaperPotOutput, 0.0f, 10.0f, 10.0f, rPot));
+    p1Smoothed.setTargetValue(juce::jmap(audioTaperPotOutput, 0.0f, 10.0f, 10.0f, rPot));
 }
 
 void ClippingStage::reset()

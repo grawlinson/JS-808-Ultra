@@ -25,7 +25,7 @@ void DryComp::setThreshold(float val)
     // y = ((x-min)/(max-min))^factor
     float skewedValue = std::powf((val - 0.0f) / (10.0f - 0.0f), 2.0f);
 
-    auto thesholdInDB = jmap(skewedValue, 0.0f, 1.0f, 0.0f, -80.0f);
+    auto thesholdInDB = juce::jmap(skewedValue, 0.0f, 1.0f, 0.0f, -80.0f);
     thresholdSmoothed.setTargetValue(thesholdInDB);
 }
 

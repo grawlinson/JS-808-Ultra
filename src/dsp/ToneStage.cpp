@@ -17,7 +17,7 @@ ToneStage::ToneStage()
 void ToneStage::setTone(float tone)
 {
     auto gTaperPotOutput = taperPotSim(tone);
-    rLSmoothed.setTargetValue(jmap(gTaperPotOutput, 0.0f, 10.0f, 10.0f, rPot));
+    rLSmoothed.setTargetValue(juce::jmap(gTaperPotOutput, 0.0f, 10.0f, 10.0f, rPot));
 }
 
 void ToneStage::prepare(float sampleRate)

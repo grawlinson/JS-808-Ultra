@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-
 using namespace chowdsp::WDFT;
 
 class ClipWDFa

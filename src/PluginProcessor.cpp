@@ -19,15 +19,15 @@ TS808UltraAudioProcessor::TS808UltraAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), parameters(*this, nullptr, Identifier("sampld"),
+                       ), parameters(*this, nullptr, juce::Identifier("sampld"),
                            {
-                               std::make_unique<AudioParameterFloat>("inputGain", "Input Gain", NormalisableRange<float>(-80.0f, 20.0f,0.1f, 2.0f), 0.0f),
-                               std::make_unique<AudioParameterFloat>("drive", "Drive", NormalisableRange<float>(0.0f, 10.0f,0.1f), 2.0f),
-                               std::make_unique<AudioParameterFloat>("tone", "Tone", NormalisableRange<float>(0.0f, 10.0f,0.1f), 5.0f),
-                               std::make_unique<AudioParameterFloat>("mix", "Mix", NormalisableRange<float>(0.0f, 10.0f,0.1f), 10.0f),
-                               std::make_unique<AudioParameterFloat>("filter", "Direct Filter", NormalisableRange<float>(0.0f, 10.0f,0.1f), 0.0f),
-                               std::make_unique<AudioParameterFloat>("drySquash", "Direct Squash", NormalisableRange<float>(0.0f, 10.0f,0.1f), 0.0f),
-                               std::make_unique<AudioParameterFloat>("outputGain", "Output Gain", NormalisableRange<float>(-30.0f, 30.0f,0.1f), 0.0f),
+                               std::make_unique<juce::AudioParameterFloat>("inputGain", "Input Gain", juce::NormalisableRange<float>(-80.0f, 20.0f,0.1f, 2.0f), 0.0f),
+                               std::make_unique<juce::AudioParameterFloat>("drive", "Drive", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 2.0f),
+                               std::make_unique<juce::AudioParameterFloat>("tone", "Tone", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 5.0f),
+                               std::make_unique<juce::AudioParameterFloat>("mix", "Mix", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 10.0f),
+                               std::make_unique<juce::AudioParameterFloat>("filter", "Direct Filter", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 0.0f),
+                               std::make_unique<juce::AudioParameterFloat>("drySquash", "Direct Squash", juce::NormalisableRange<float>(0.0f, 10.0f,0.1f), 0.0f),
+                               std::make_unique<juce::AudioParameterFloat>("outputGain", "Output Gain", juce::NormalisableRange<float>(-30.0f, 30.0f,0.1f), 0.0f),
                               
                            })
 #endif
@@ -110,7 +110,7 @@ void TS808UltraAudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void TS808UltraAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    dsp::ProcessSpec spec;
+    juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = getTotalNumOutputChannels();
@@ -183,7 +183,7 @@ void TS808UltraAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     juce::ScopedNoDenormals noDenormals;
     const auto numSamples = buffer.getNumSamples();
 
-    dsp::AudioBlock<float> block(buffer);
+    juce::dsp::AudioBlock<float> block(buffer);
     auto context = juce::dsp::ProcessContextReplacing<float>(block);  
 
     // input gain stage
@@ -192,7 +192,7 @@ void TS808UltraAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 
     // copy original dry signal into a buffer
     parallelBuffer.makeCopyOf(buffer, true);
-    dsp::AudioBlock<float> parallelBlock(parallelBuffer);
+    juce::dsp::AudioBlock<float> parallelBlock(parallelBuffer);
     auto parallelContext = juce::dsp::ProcessContextReplacing<float>(parallelBlock);
 
     //------start of di parallel processing---------
@@ -202,7 +202,7 @@ void TS808UltraAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     dryLPF.setCutoff(*filterParameter);
     dryLPF.processBlock(parallelContext);
 
-    dryWetMixer.setWetMixProportion(jmap((float)*mixParameter, 0.0f, 10.0f, 0.0f, 1.0f));
+    dryWetMixer.setWetMixProportion(juce::jmap((float)*mixParameter, 0.0f, 10.0f, 0.0f, 1.0f));
     dryWetMixer.pushDrySamples(parallelBlock);
     //------end of di parallel processing-----------
 
@@ -256,17 +256,17 @@ juce::AudioProcessorEditor* TS808UltraAudioProcessor::createEditor()
 void TS808UltraAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto state = parameters.copyState();
-    std::unique_ptr<XmlElement> xml(state.createXml());
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
 }
 
 void TS808UltraAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    std::unique_ptr<XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
     if (xmlState.get() != nullptr)
         if (xmlState->hasTagName(parameters.state.getType()))
-            parameters.replaceState(ValueTree::fromXml(*xmlState));
+            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
 //==============================================================================

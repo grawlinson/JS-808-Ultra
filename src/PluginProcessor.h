@@ -8,7 +8,9 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_data_structures/juce_data_structures.h>
+
 #include "dsp/ClippingStage.h"
 #include "dsp/ToneStage.h"
 #include "dsp/DryLPF.h"
@@ -59,7 +61,7 @@ public:
 
 private:
     //==============================================================================
-    AudioProcessorValueTreeState parameters;
+    juce::AudioProcessorValueTreeState parameters;
 
     std::atomic<float>* inputGainParameter = nullptr;
     std::atomic<float>* driveParameter = nullptr;
@@ -69,7 +71,7 @@ private:
     std::atomic<float>* drySquashParameter = nullptr;
     std::atomic<float>* outputGainParameter = nullptr;
 
-    dsp::DryWetMixer<float> dryWetMixer;
+    juce::dsp::DryWetMixer<float> dryWetMixer;
 
     ClippingStage clippingStage[2];
     ToneStage toneStage[2];
@@ -77,12 +79,12 @@ private:
     DryComp dryComp;
 
     size_t oversampleFactor = 1;
-    dsp::Oversampling<float> oversampling { 2, oversampleFactor, dsp::Oversampling<float>::filterHalfBandPolyphaseIIR };
+    juce::dsp::Oversampling<float> oversampling { 2, oversampleFactor, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR };
 
-    dsp::Gain<float> inputGain;
-    dsp::Gain<float> outputGain;
+    juce::dsp::Gain<float> inputGain;
+    juce::dsp::Gain<float> outputGain;
 
-    AudioBuffer<float> parallelBuffer;
+    juce::AudioBuffer<float> parallelBuffer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TS808UltraAudioProcessor)
 };

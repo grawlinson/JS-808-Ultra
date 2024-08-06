@@ -41,8 +41,6 @@ clap_juce_extensions_plugin(TARGET ${PROJECT_NAME}
   CLAP_FEATURES "audio-effect"
 )
 
-juce_generate_juce_header(${PROJECT_NAME})
-
 target_sources(${PROJECT_NAME}
   PRIVATE
     src/dsp/ClippingStage.cpp
