@@ -17,6 +17,7 @@ endif()
 add_subdirectory(libs/JUCE)
 add_subdirectory(libs/clap-juce-extensions)
 add_subdirectory(libs/chowdsp_utils)
+add_subdirectory(libs/chowdsp_wdf)
 add_subdirectory(libs/chunkware-simple-dynamics)
 
 # metadata
@@ -72,6 +73,8 @@ target_sources(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
     ChunkwareSimpleDynamics
+    chowdsp::chowdsp_dsp_utils
+    chowdsp_wdf
     juce_audio_basics
     juce_audio_devices
     juce_audio_formats
@@ -85,7 +88,6 @@ target_link_libraries(${PROJECT_NAME}
     juce_gui_basics
     juce_gui_extra
     juce_dsp
-    chowdsp_dsp
   PUBLIC
     juce::juce_recommended_warning_flags
     juce::juce_recommended_config_flags
