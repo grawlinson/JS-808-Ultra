@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.22)
 
-# set better CMake defaults
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD 17)
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
-endif()
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU" AND UNIX AND NOT APPLE AND NOT SKIP_PIE_CHANGE)
-  message(STATUS "Setting -no-pie on EXE flags; use SKIP_PIE_CHANGE=TRUE to avoid" )
-  set(CMAKE_EXE_LINKER_FLAGS "-no-pie")
-endif()
-
+# split up cmake into easier-to-parse snippets
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+# set some sane CMake specific defaults
+include(defaults)
+# set some platform specific hacks/fixes (Linux/macOS/Windows)
+include(platform-specific)
 
 # JUCE & dependencies
 add_subdirectory(libs/JUCE)
