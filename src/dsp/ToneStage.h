@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <chowdsp_dsp/chowdsp_dsp.h>
+#include <chowdsp_filters/chowdsp_filters.h>
 #include <juce_audio_basics/juce_audio_basics.h>
 
 class ToneStage : public chowdsp::IIRFilter<2>
@@ -20,7 +20,7 @@ public:
     void setTone (float tone);
     void prepare (float sampleRate);
     void calcCoefs (float curTreble);
-    void processBlock (float* block, const int numSamples) noexcept override;
+    void processBlock (float* block, const int numSamples);
 
 private:
     float taperPotSim (float in);

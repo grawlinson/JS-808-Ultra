@@ -69,13 +69,14 @@ void ToneStage::calcCoefs (float rL)
 
     // frequency warping (Use chowdsp for now to find wc. Later run matlab sim)
 
-    const float wc = chowdsp::Bilinear::calcPoleFreq (as[0], as[1], as[2]);
+
+    const float wc = chowdsp::ConformalMaps::calcPoleFreq (as[0], as[1], as[2]);
     const auto K = wc == 0.0f ? 2.0f * fs : wc / std::tan (wc / (2.0f * fs));
 
-    chowdsp::Bilinear::BilinearTransform<float, 3>::call (b, a, bs, as, K);
+    chowdsp::ConformalMaps::Transform<float, 2>::bilinear(b, a, bs, as, K);
 }
 
-void ToneStage::processBlock (float* block, const int numSamples) noexcept
+void ToneStage::processBlock (float* block, const int numSamples)
 {
     if (rLSmoothed.isSmoothing())
     {

@@ -11,8 +11,7 @@
 #pragma once
 
 #include <juce_audio_basics/juce_audio_basics.h>
-
-#include "SimpleComp.h"
+#include <SimpleComp.h>
 
 class DryComp
 {

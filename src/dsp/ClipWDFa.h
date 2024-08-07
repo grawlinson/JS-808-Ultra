@@ -14,7 +14,8 @@
 
 #pragma once
 
-using namespace chowdsp::WDFT;
+#include <chowdsp_wdf/chowdsp_wdf.h>
+using namespace chowdsp::wdft;
 
 class ClipWDFa
 {
