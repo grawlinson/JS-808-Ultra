@@ -18,7 +18,10 @@ add_subdirectory(libs/chunkware-simple-dynamics)
 set(COMPANY_NAME "grawlinson")
 set(PROJECT_NAME "JS-808-Ultra")
 set(PLUGIN_ID "com.${COMPANY_NAME}.${PROJECT_NAME}")
-project(${PROJECT_NAME} VERSION 1.0.1 LANGUAGES CXX)
+project(${PROJECT_NAME}
+  VERSION 1.0.1
+  LANGUAGES CXX
+)
 
 # setup JUCE
 juce_add_plugin(${PROJECT_NAME}
